@@ -1,6 +1,7 @@
 from backend.app.markmanage.crud.crud_user import UserCRUD
 from backend.app.markmanage.models.user import User
-from backend.database.db_mysql import async_db_session
+# from backend.database.db_mysql import async_db_session
+from backend.database.engine import async_db_session
 from backend.common.exception import errors
 from passlib.context import CryptContext
 
@@ -10,7 +11,7 @@ class UserService:
         self.crud = UserCRUD()  # 创建CRUD实例
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-    async def create_user(self, username: str, password: str, role: str, full_name: str = None,
+    async def create_user(self, username: str, password: str, role: str, class_name: str, full_name: str = None,
                           email: str = None) -> User:
         # 在服务层处理密码哈希
         hashed_password = self.pwd_context.hash(password)
@@ -20,6 +21,7 @@ class UserService:
                 username=username,
                 password=hashed_password,  # 传递哈希后的密码
                 role=role,
+                class_name=class_name,
                 full_name=full_name,
                 email=email
             )

@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, Text, DateTime, ForeignKey, String
 from sqlalchemy.orm import relationship
-from backend.database.db_mysql import Base
+from backend.database.base import Base
 
 
 class Paper(Base):

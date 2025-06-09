@@ -14,8 +14,10 @@ class UserCRUD:
     async def create_user(self, db: AsyncSession, username: str,
                           password: str,
                           role: str,
+                          class_name: str,
                           full_name: str | None = None,
-                          email: str | None = None):
+                          email: str | None = None
+                          ):
         """创建用户"""
 
         user = User(
@@ -23,7 +25,8 @@ class UserCRUD:
             password=password,
             email=email,
             full_name=full_name,
-            role=role
+            role=role,
+            class_name=class_name
         )
 
         db.add(user)

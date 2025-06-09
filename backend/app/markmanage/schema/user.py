@@ -3,6 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
+
 class UserResponse(BaseModel):
     # 返回的信息应该包含用户的基本信息，如ID、用户名、邮箱、姓名、角色等
     # 但是为了防止信息泄露，不应该返回密码等敏感信息
@@ -11,8 +12,8 @@ class UserResponse(BaseModel):
     username: str = Field(..., description="用户名")
     email: Optional[str] = Field(..., description="邮箱")
     full_name: Optional[str] = Field(None, description="姓名")
+    class_name: str = Field(..., description="班级名称")
     role: str = Field(..., description="角色")
-
 
 # class CreateUser(UserResponse):
 #     pass

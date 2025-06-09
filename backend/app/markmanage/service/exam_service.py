@@ -8,7 +8,7 @@ from fastapi import UploadFile, Form, File
 from backend.common.exception import errors
 from backend.utils.file_utils import validate_file, save_upload_file
 
-from backend.database.db_mysql import async_db_session
+from backend.database.engine import async_db_session
 from backend.app.markmanage.schema.exam import ExamBase
 from backend.app.markmanage.models.exam import Exam
 from backend.config.fileConfig import settings

@@ -12,9 +12,10 @@ router = APIRouter()
 
 
 @router.post("/users")
-async def create_user(username: str, password: str, role: str, full_name: str = None, email: str = None):
+async def create_user(username: str, password: str, role: str, class_name: str, full_name: str = None,
+                      email: str = None):
     try:
-        user_id = await user_service.create_user(username, password, role, full_name, email)
+        user_id = await user_service.create_user(username, password, role, class_name, full_name, email)
         return response_base.success(data={"user_id": user_id})
     # 捕获服务层抛出的自定义的错误
     except errors.RequestError as e:

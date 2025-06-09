@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime
+
 from sqlalchemy.orm import relationship
-from backend.database.db_mysql import Base
+from backend.database.base import Base
 
 
 class User(Base):
@@ -12,8 +13,8 @@ class User(Base):
     full_name = Column(String(100))
     email = Column(String(100), unique=True)
     role = Column(String(20), nullable=False)  # 'teacher' 或 'student'
-    # 班级信息
-    # class_id = Column(Integer, nullable=True)
+    # 老师教的班级,假设一个老师只能教一个班级
+    class_name = Column(String(100))
 
     # 关系
     exams_created = relationship("Exam", back_populates="creator")
