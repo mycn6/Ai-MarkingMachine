@@ -37,10 +37,6 @@ async def create_exam_with_files(
         CustomResponse.code = e.code
         CustomResponse.msg = e.msg
         return response_base.fail(res=CustomResponse)
-    except errors.RequestError as e:
-        CustomResponse.code = e.code
-        CustomResponse.msg = e.msg
-        return response_base.fail(res=CustomResponse)
     except errors.ServerError as e:
         CustomResponse.code = e.code
         CustomResponse.msg = e.msg
@@ -75,7 +71,7 @@ async def update_exam_files(
         CustomResponse.code = e.code
         CustomResponse.msg = e.msg
         return response_base.fail(res=CustomResponse)
-    except errors.RequestError as e:
+    except errors.ServerError as e:
         CustomResponse.code = e.code
         CustomResponse.msg = e.msg
         return response_base.fail(res=CustomResponse)
@@ -88,7 +84,10 @@ async def get_exam(
     """获取考试详情"""
     try:
         exam = await exam_service.get_exam_by_id(exam_id)
-        data = ExamBase.from_orm(exam)
+        if not exam:
+            data = None
+        else:
+            data = ExamBase.from_orm(exam)
         return response_base.success(data=data)
     except errors.NotFoundError as e:
         CustomResponse.code = e.code
@@ -98,11 +97,11 @@ async def get_exam(
 
 @router.get("/get_exams")
 async def list_exams(
-        skip: int = 0,
         limit: int = 100,
+        skip: int = 0
 ):
     """获取考试列表"""
-    exams = await exam_service.list_exams(skip, limit)
+    exams = await exam_service.list_exams(limit, skip)
     if not exams:
         return response_base.success(data=[])
     data = [ExamBase.from_orm(exam) for exam in exams]
@@ -130,7 +129,7 @@ async def delete_exam(
 
 
 # 获取 获取文件路径和原始文件名
-@router.get("/get_exam_file_path/{exam_id}/files/{file_type}/path")
+@router.get("/get_exam_file_path/{exam_id}/files/path")
 async def get_exam_file_path(
         exam_id: int,
         # file_type: str,
@@ -138,7 +137,7 @@ async def get_exam_file_path(
     """获取考试文件路径"""
     try:
         # file_path, file_name = await exam_service.get_file_path(exam_id, file_type)
-        file_path, file_name = await exam_service.get_file_path(exam_id)
+        file_path, file_name = await exam_service.get_exam_file_info(exam_id)
         if not file_path or not file_name:
             raise errors.NotFoundError(msg='文件不存在')
         data = {"file_path": file_path, "file_name": file_name}

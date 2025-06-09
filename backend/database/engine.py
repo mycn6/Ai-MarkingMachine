@@ -13,8 +13,8 @@ SQLALCHEMY_DATABASE_URL = "mysql+asyncmy://root:123456@localhost/exam"
 def create_async_db_engine_and_session():
     """创建数据库引擎和会话工厂"""
     try:
-
-        engine = create_async_engine(SQLALCHEMY_DATABASE_URL, echo=True, future=True, pool_pre_ping=True)
+        # future=True表示使用异步IO，pool_pre_ping=True表示ping数据库连接，防止连接断开
+        engine = create_async_engine(SQLALCHEMY_DATABASE_URL, future=True, pool_pre_ping=True)
         logger.info('✅ 数据库引擎创建成功')
 
         db_session = async_sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
