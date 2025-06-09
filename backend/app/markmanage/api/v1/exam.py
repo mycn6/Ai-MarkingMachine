@@ -18,7 +18,7 @@ async def create_exam_with_files(
         time: datetime = Form(...),
         #   设置默认值
         creator_id: int = Form(1),
-        answers_file: UploadFile = File(...),
+        # answers_file: UploadFile = File(...),
         questions_file: UploadFile = File(...),
 ):
     """创建考试记录并上传相关文件"""
@@ -29,7 +29,7 @@ async def create_exam_with_files(
             description=description,
             time=time,
             creator_id=creator_id,
-            answers_file=answers_file,
+            # answers_file=answers_file,
             questions_file=questions_file,
         )
         return response_base.success(data={"exam_id": exam_id})
@@ -50,17 +50,23 @@ async def create_exam_with_files(
 @router.put("/update_exam/{exam_id}/files")
 async def update_exam_files(
         exam_id: int,
-        answers_file: UploadFile = File(None),
+        # answers_file: UploadFile = File(None),
         questions_file: UploadFile = File(None),
 ):
     """更新考试的文件"""
     try:
-        if not answers_file and not questions_file:
-            raise errors.RequestError(msg='请上传答案或题目文件')
-
+        # if not answers_file and not questions_file:
+        #     raise errors.RequestError(msg='请上传答案或题目文件')
+        #
+        # await exam_service.update_exam_files(
+        #     exam_id=exam_id,
+        #     answers_file=answers_file,
+        #     questions_file=questions_file
+        # )
+        if not questions_file:
+            raise errors.RequestError(msg='请上传题目文件')
         await exam_service.update_exam_files(
             exam_id=exam_id,
-            answers_file=answers_file,
             questions_file=questions_file
         )
         return response_base.success()
@@ -127,11 +133,12 @@ async def delete_exam(
 @router.get("/get_exam_file_path/{exam_id}/files/{file_type}/path")
 async def get_exam_file_path(
         exam_id: int,
-        file_type: str,
+        # file_type: str,
 ):
     """获取考试文件路径"""
     try:
-        file_path, file_name = await exam_service.get_file_path(exam_id, file_type)
+        # file_path, file_name = await exam_service.get_file_path(exam_id, file_type)
+        file_path, file_name = await exam_service.get_file_path(exam_id)
         if not file_path or not file_name:
             raise errors.NotFoundError(msg='文件不存在')
         data = {"file_path": file_path, "file_name": file_name}

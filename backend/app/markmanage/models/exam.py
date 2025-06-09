@@ -19,10 +19,11 @@ class Exam(Base):
     # 题目数据直接存储在数据库中
     # questions = Column(LargeBinary)  # 存储文件二进制内容
     # answers = Column(LargeBinary)  # 存储文件二进制内容
-    answers_path = Column(String(200))  # 存储文件路径
+    # 暂时为英语作文批改，不需答案
+    # answers_path = Column(String(200))  # 存储文件路径
     questions_path = Column(String(200))  # 存储文件路径
     questions_filename = Column(String(255), doc="题目文件原始名称")
-    answers_filename = Column(String(255), doc="答案文件原始名称")
+    # answers_filename = Column(String(255), doc="答案文件原始名称")
 
 
     # 关系
